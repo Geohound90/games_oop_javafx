@@ -73,6 +73,7 @@ public class Logic {
         for (int cell = 0; cell != table.length; cell++) {
             if (table[row][cell] != 1) {
                 result = false;
+                break;
             }
         }
         return result;
@@ -83,6 +84,7 @@ public class Logic {
         for (int row = 0; row != table.length; row++) {
             if (table[row][cell] != 1) {
                 result = false;
+                break;
             }
         }
         return result;
