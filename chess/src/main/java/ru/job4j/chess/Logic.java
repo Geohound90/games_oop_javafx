@@ -9,7 +9,7 @@ import java.util.Optional;
 /**
  * //TODO add comments.
  *
- * @author Petr Arsentev (parsentev@yandex.ru)
+ * @author Ryudo
  * @version $Id$
  * @since 0.1
  */
@@ -24,9 +24,19 @@ public class Logic {
     public boolean move(Cell source, Cell dest) {
         boolean rst = false;
         int index = this.findBy(source);
+        boolean check = false;
         if (index != -1) {
             Cell[] steps = this.figures[index].way(source, dest);
-            if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
+            if (steps.length > 0) {
+                for (int step = 0; step < steps.length; step++) {
+                    for (int figure = 0; figure < this.figures.length; figure++) {
+                        if (steps[step].equals(this.figures[figure].position())) {
+                            check = true;
+                        }
+                    }
+                }
+            }
+            if (steps.length > 0 && steps[steps.length - 1].equals(dest) && check == false) {
                 rst = true;
                 this.figures[index] = this.figures[index].copy(dest);
             }
