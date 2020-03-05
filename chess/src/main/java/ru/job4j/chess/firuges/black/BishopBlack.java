@@ -22,38 +22,31 @@ public class BishopBlack implements Figure {
 
     @Override
     public Cell[] way(Cell source, Cell dest) {
-        if (isDiagonal(source, dest)) {
-            int size = Math.abs(dest.y - source.y);
-            Cell[] steps = new Cell[size];
-            int deltaX = 1;
-            int deltaY = 1;
-            for (int index = 0; index < size; index++) {
-                if (source.x > dest.x && source.y > dest.y) {
-                    steps[index] = Cell.findBy(source.x - index - deltaX, source.y - index - deltaY);
-                } else if (source.x > dest.x && source.y < dest.y) {
-                    steps[index] = Cell.findBy(source.x - index - deltaX, source.y + index + deltaY);
-                } else if (source.x < dest.x && source.y > dest.y) {
-                    steps[index] = Cell.findBy(source.x + index + deltaX, source.y - index - deltaY);
-                } else {
-                    steps[index] = Cell.findBy(source.x + index + deltaX, source.y + index + deltaY);
-                }
-            }
-            return steps;
-        } else {
-            Cell[] steps = new Cell[0];
-            return steps;
-            /*throw new IllegalStateException(
+        if (!isDiagonal(source, dest)) {
+            throw new IllegalStateException(
                     String.format("Could not way by diagonal from %s to %s", source, dest)
-            );*/
+            );
         }
+        int size = Math.abs(dest.y - source.y);
+        Cell[] steps = new Cell[size];
+        int deltaX = 1;
+        int deltaY = 1;
+        if (source.x > dest.x) {
+            deltaX = -1;
+        }
+        if (source.y > dest.y) {
+            deltaY = -1;
+        }
+        for (int index = 0; index < size; index++) {
+            int x = source.x + deltaX * (index + 1);
+            int y = source.y + deltaY * (index + 1);
+            steps[index] = Cell.findBy(x, y);
+        }
+        return steps;
     }
 
     public boolean isDiagonal(Cell source, Cell dest) {
-        boolean rsl = false;
-        if (Math.abs(dest.x - source.x) == (Math.abs(dest.y - source.y))) {
-            rsl = true;
-        }
-        return rsl;
+        return Math.abs(dest.x - source.x) == (Math.abs(dest.y - source.y));
     }
 
     @Override

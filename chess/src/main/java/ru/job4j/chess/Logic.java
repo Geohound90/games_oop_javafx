@@ -23,20 +23,12 @@ public class Logic {
 
     public boolean move(Cell source, Cell dest) {
         boolean rst = false;
+        boolean check;
         int index = this.findBy(source);
-        boolean check = false;
         if (index != -1) {
             Cell[] steps = this.figures[index].way(source, dest);
-            if (steps.length > 0) {
-                for (int step = 0; step < steps.length; step++) {
-                    for (int figure = 0; figure < this.figures.length; figure++) {
-                        if (steps[step].equals(this.figures[figure].position())) {
-                            check = true;
-                        }
-                    }
-                }
-            }
-            if (steps.length > 0 && steps[steps.length - 1].equals(dest) && check == false) {
+            check = isWayFree(steps);
+            if (steps.length > 0 && steps[steps.length - 1].equals(dest) && !check) {
                 rst = true;
                 this.figures[index] = this.figures[index].copy(dest);
             }
@@ -60,6 +52,18 @@ public class Logic {
             }
         }
         return rst;
+    }
+
+    private boolean isWayFree(Cell[] steps) {
+        boolean check = false;
+        for (int index = 0; index < steps.length; index++) {
+            int rst = findBy(steps[index]);
+            if (rst != -1) {
+                check = true;
+                break;
+            }
+        }
+        return check;
     }
 
     @Override
